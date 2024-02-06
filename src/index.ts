@@ -1,25 +1,13 @@
 import { Hono } from "hono";
 import { logger } from "hono/logger";
+import { router as myRouter } from "./routes/router"; // router.tsからルーターをインポート
 
 const app = new Hono();
+
 app.use("*", logger());
 
-app.get("/", (c) => {
-  return c.text("Hello Hono!");
-});
+app.route("/api", myRouter);
 
-app.get("/api/hello", (c) => {
-  return c.json({
-    ok: true,
-    message: "Hello Hono!",
-  });
-});
-
-app.get("/posts/:id", (c) => {
-  const page = c.req.query("page");
-  const id = c.req.param("id");
-
-  return c.text(`Post ID: ${id} page: ${page}`);
-});
+app.get("/", (c) => c.text("Hello from the app!"));
 
 export default app;
